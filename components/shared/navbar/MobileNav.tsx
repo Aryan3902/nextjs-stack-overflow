@@ -75,13 +75,13 @@ const MobileNav = () => {
             Dev <span className="text-primary-500">Flow</span>
           </p>
         </Link>
-        <div>
+        <div className="flex min-h-full flex-col justify-between">
           <SheetClose asChild>
             <NavContent />
           </SheetClose>
 
           <SignedOut>
-            <div className="flex flex-col gap-3">
+            <div className="mb-5 flex flex-col gap-3">
               <SheetClose asChild>
                 <Link href="/signin">
                   <Button className="small-medium btn-secondary min-h-[41] w-full rounded-lg px-4 py-3 shadow-none">
