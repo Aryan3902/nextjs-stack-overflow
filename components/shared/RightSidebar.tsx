@@ -6,54 +6,54 @@ import TopicTag from "./TopicTag";
 const RightSidebar = () => {
   const hotQuestions = [
     {
-      _id: 1,
+      _id: "1",
       title: "How to use React Router?",
     },
     {
-      _id: 2,
+      _id: "2",
       title: "How to use Next.js?",
     },
     {
-      _id: 3,
+      _id: "3",
       title: "How to use React Context?",
     },
     {
-      _id: 4,
+      _id: "4",
       title: "How to use React Router?",
     },
     {
-      _id: 5,
+      _id: "5",
       title: "How to use Next.js?",
     },
     {
-      _id: 6,
+      _id: "6",
       title: "How to use React Context?",
     },
   ];
 
   const popularTags = [
     {
-      _id: 1,
+      _id: "1",
       name: "React",
       totalQuestions: 100,
     },
     {
-      _id: 2,
+      _id: "2",
       name: "Next.js",
       totalQuestions: 50,
     },
     {
-      _id: 3,
+      _id: "3",
       name: "React Context",
       totalQuestions: 30,
     },
     {
-      _id: 4,
+      _id: "4",
       name: "React Router",
       totalQuestions: 20,
     },
     {
-      _id: 5,
+      _id: "5",
       name: "Next.js",
       totalQuestions: 50,
     },
