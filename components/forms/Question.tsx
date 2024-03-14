@@ -18,6 +18,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { QuestionsFormSchema } from "@/lib/validations";
+import { Badge } from "../ui/badge";
+import Image from "next/image";
 
 const Question = () => {
   const editorRef = useRef(null);
@@ -37,6 +39,40 @@ const Question = () => {
     // ✅ This will be type-safe and validated.
     console.log(values);
   }
+
+  const handleKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    field: any
+  ) => {
+    if (e.key === "Enter" && field.name === "tags") {
+      e.preventDefault();
+
+      const tagInput = e.target as HTMLInputElement;
+      const tagValue = tagInput.value.trim();
+
+      if (tagValue !== "") {
+        if (tagValue.length > 15) {
+          return form.setError("tags", {
+            type: "max",
+            message: "Tag can not exceed 15 characters.",
+          });
+        }
+        if (!field.value.includes(tagValue as never)) {
+          form.setValue("tags", [...field.value, tagValue]);
+          tagInput.value = "";
+          form.clearErrors("tags");
+        } else {
+          form.trigger();
+        }
+      }
+    }
+  };
+
+  const handleTagRemove = (tag: string, field: any) => {
+    const newTags = field.value.filter((t: string) => t !== tag);
+    form.setValue("tags", newTags);
+  };
+
   return (
     <Form {...form}>
       <form
@@ -133,10 +169,34 @@ const Question = () => {
                 Tags<span className="text-primary-500">*</span>
               </FormLabel>
               <FormControl className="mt-3.5">
-                <Input
-                  className="no-focus paragraph-regular background-light800_dark300 light-border-2 text-dark300_light700 min-h-[56px] border"
-                  {...field}
-                />
+                <>
+                  <Input
+                    className="no-focus paragraph-regular background-light800_dark300 light-border-2 text-dark300_light700 min-h-[56px] border"
+                    onKeyDown={(e) => {
+                      handleKeyDown(e, field);
+                    }}
+                  />
+                  {field.value.length > 0 && (
+                    <div className="flex-start mt-2.5 gap-2.5">
+                      {field.value.map((tag, index) => (
+                        <Badge
+                          key={index}
+                          className="subtle-medium background-light800_dark300 text-dark400_light500 flex items-center justify-center gap-2 rounded-md border-none px-4 py-2 capitalize hover:cursor-pointer"
+                          onClick={() => handleTagRemove(tag, field)}
+                        >
+                          {tag}
+                          <Image
+                            src="/assets/icons/close.svg"
+                            alt="close"
+                            width={12}
+                            height={12}
+                            className="ursor-pointer object-contain invert-0 dark:invert"
+                          />
+                        </Badge>
+                      ))}
+                    </div>
+                  )}
+                </>
               </FormControl>
               <FormDescription className="body-regular mt-2.5 text-light-500 ">
                 Add up to 4 tags to describe what your question is about. You
