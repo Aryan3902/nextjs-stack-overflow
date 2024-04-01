@@ -12,6 +12,6 @@ export const QuestionsFormSchema = z.object({
     .min(10, {
       message: "Explanation must be at least 10 characters.",
     })
-    .max(500, { message: "Explanation can not exceed 500 characters." }),
+    .max(1000, { message: "Please limit explanation to fewer words." }),
   tags: z.array(z.string().min(1).max(15)).min(1).max(4),
 });
