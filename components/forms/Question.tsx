@@ -57,6 +57,7 @@ const Question = ({ mongoUser }: QuestionProps) => {
         description: values.explanation,
         tags: values.tags,
         author: JSON.parse(mongoUser),
+        path: pathname,
       });
 
       router.push("/");
