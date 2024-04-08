@@ -12,6 +12,7 @@ export async function getQuestions(params: GetQuestionsParams) {
   try {
     connectToDatabase();
 
+    // eslint-disable-next-line no-unused-vars
     const { page = 1, pageSize = 10, searchQuery = "", filter = "" } = params;
 
     // Get all questions
