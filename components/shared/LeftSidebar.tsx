@@ -63,7 +63,7 @@ const LeftSidebar = () => {
                 </span>
               </Button>
             </Link>
-            <Link href="/signup">
+            <Link href="/sign-up">
               <Button className="small-medium light-border-2 btn-tertiary min-h-[41] w-full rounded-lg px-4 py-3 shadow-none">
                 <Image
                   src="/assets/icons/sign-up.svg"
