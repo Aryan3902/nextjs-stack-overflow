@@ -1,6 +1,7 @@
 import User from "@/database/user.model";
+import Tag from "@/database/tag.model";
 import { connectToDatabase } from "../mongoose";
-import { GetTopInteractedTagsParams } from "./shared.types";
+import { GetAllTagsParams, GetTopInteractedTagsParams } from "./shared.types";
 
 export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
   try {
@@ -18,6 +19,24 @@ export async function getTopInteractedTags(params: GetTopInteractedTagsParams) {
       { name: "Next.js", _id: "2" },
       { name: "Node.js", _id: "3" },
     ];
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function getAllTags(params: GetAllTagsParams) {
+  try {
+    connectToDatabase();
+
+    const { page = 1, pageSize = 10, filter = "", searchQuery = "" } = params;
+
+    // Get all tags
+    const tags = await Tag.find({})
+      .limit(pageSize)
+      .skip((page - 1) * pageSize);
+
+    return { tags };
   } catch (error) {
     console.error(error);
     throw error;
