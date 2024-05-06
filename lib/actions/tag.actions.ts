@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import User from "@/database/user.model";
 import Tag from "@/database/tag.model";
 import { connectToDatabase } from "../mongoose";
