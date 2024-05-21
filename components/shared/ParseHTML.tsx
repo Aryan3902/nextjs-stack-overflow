@@ -27,6 +27,8 @@ import "prismjs/components/prism-mongodb";
 import "prismjs/plugins/line-numbers/prism-line-numbers.js";
 import "prismjs/plugins/line-numbers/prism-line-numbers.css";
 
+import "@/styles/prism.css";
+
 interface ParseHTMLProps {
   data: string;
 }

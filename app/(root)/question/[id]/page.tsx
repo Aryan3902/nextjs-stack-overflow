@@ -1,20 +1,30 @@
+import Answer from "@/components/forms/Answer";
+import AllAnswers from "@/components/shared/AllAnswers";
 import Metric from "@/components/shared/Metric";
 import ParseHTML from "@/components/shared/ParseHTML";
+import TopicTag from "@/components/shared/TopicTag";
 import { getQuestionById } from "@/lib/actions/question.action";
+import { getUserById } from "@/lib/actions/user.action";
 import { formatNumber } from "@/lib/utils";
+import { auth } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
 const page = async ({ params, searchParams }: any) => {
   const results = await getQuestionById({ questionId: params.id });
+  const { userId } = auth();
+  let mongoUser;
+  if (userId) {
+    mongoUser = await getUserById({ userId });
+  }
   const question = results.question;
   return (
     <>
       <div className="flex-start w-full flex-col">
         <div className="flex w-full flex-col-reverse justify-between gap-5 sm:flex-row sm:items-center sm:gap-2">
           <Link
-            href={`/profile/${question.author.clerkId}`}
+            href={`/profile/${question.author.userId}`}
             className="flex items-center justify-start gap-1"
           >
             <Image
@@ -58,6 +68,23 @@ const page = async ({ params, searchParams }: any) => {
         />
       </div>
       <ParseHTML data={question.description} />
+      <div className="mt-8 flex flex-wrap gap-2">
+        {question.tags.map((tag: any) => (
+          <TopicTag key={tag._id} name={tag.name} _id={tag._id} />
+        ))}
+      </div>
+
+      <AllAnswers
+        questionId={question._id}
+        userId={JSON.stringify(mongoUser._id)}
+        totalAnswers={question.answers.length}
+      />
+
+      <Answer
+        question={question.content}
+        questionId={JSON.stringify(question._id)}
+        authorId={JSON.stringify(mongoUser._id)}
+      />
     </>
   );
 };
