@@ -16,6 +16,7 @@ import {
   QuestionId,
   UserId,
 } from "@/lib/actions/shared.types";
+import Votes from "./Votes";
 
 interface Props extends QuestionId, UserId, OptionalPage, OptionalFilter {
   totalAnswers: number;
@@ -68,7 +69,18 @@ const AllAnswers = async ({
                     </p>
                   </div>
                 </Link>
-                <div className="flex justify-end"></div>
+                <div className="flex justify-end">
+                  <Votes
+                    type="answer"
+                    itemId={JSON.stringify(answer._id)}
+                    upVotes={answer.upvotes.length}
+                    userId={JSON.stringify(userId)}
+                    hasUpvoted={answer.upvotes.includes(userId)}
+                    downVotes={answer.downvotes.length}
+                    hasDownvoted={answer.downvotes.includes(userId)}
+                    hasSaved={false}
+                  />
+                </div>
               </div>
               <ParseHTML data={answer.content} />
             </article>

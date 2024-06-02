@@ -41,8 +41,8 @@ interface Path {
   path: string;
 }
 
-interface Content {
-  content: string;
+interface Description {
+  description: string;
 }
 
 interface Voting {
@@ -102,7 +102,7 @@ export interface GetSavedQuestionParams
  */
 export interface GetQuestionsParams extends Searchable {}
 
-export interface CreateQuestionParams extends Path, Content {
+export interface CreateQuestionParams extends Path, Description {
   title: string;
   tags: string[];
   author: Schema.Types.ObjectId | IUser;
@@ -116,7 +116,7 @@ export interface DeleteQuestionParams extends QuestionId, Path {
   isQuestionPath?: boolean;
 }
 
-export interface EditQuestionParams extends QuestionId, Path, Content {
+export interface EditQuestionParams extends QuestionId, Path, Description {
   title: string;
   tags?: string[];
 }
@@ -124,7 +124,7 @@ export interface EditQuestionParams extends QuestionId, Path, Content {
 /**
  * Interfaces for answer actions
  */
-export interface CreateAnswerParams extends Path, Content {
+export interface CreateAnswerParams extends Path, Description {
   author: string;
   question: string;
 }
@@ -142,7 +142,7 @@ export interface AnswerVoteParams extends AnswerId, UserId, Path, Voting {}
 
 export interface DeleteAnswerParams extends Path, AnswerId {}
 
-export interface EditAnswerParams extends Path, AnswerId, Content {}
+export interface EditAnswerParams extends Path, AnswerId, Description {}
 
 /**
  * Interfaces for interaction actions
