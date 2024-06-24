@@ -7,7 +7,6 @@ import { formatNumber, timeAgo } from "@/lib/utils";
 interface QuestionCardProps {
   id: string;
   title: string;
-  description: string;
   tags: {
     id: string;
     name: string;
@@ -26,7 +25,6 @@ interface QuestionCardProps {
 const QuestionCard = ({
   id,
   title,
-  description,
   tags,
   votes,
   answers,

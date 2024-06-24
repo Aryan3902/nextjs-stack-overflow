@@ -48,7 +48,7 @@ const page = async ({ params, searchParams }: any) => {
               hasUpvoted={question.upvotes.includes(mongoUser?._id)}
               downVotes={question.downvotes.length}
               hasDownvoted={question.downvotes.includes(mongoUser?._id)}
-              hasSaved={mongoUser?.saved?.includes(question._id)}
+              hasSaved={mongoUser?.savedQuestions.includes(question._id)}
             />
           </div>
         </div>
