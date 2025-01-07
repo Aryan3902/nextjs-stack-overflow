@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { sidebarLinks } from "@/constants";
-import { SignedOut } from "@clerk/nextjs";
+import { SignedOut, auth, useAuth } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -10,12 +10,17 @@ import React from "react";
 
 const NavContent = () => {
   const pathName = usePathname();
+  const { userId: clerkId } = useAuth();
   return (
     <section className="flex h-full flex-col gap-5">
       {sidebarLinks.map((link, index) => {
         const isActive =
           (pathName.includes(link.route) && link.route !== "/") ||
           pathName === link.route;
+        if (link.label === "Profile") {
+          if (clerkId) link.route = `/profile/${clerkId}`;
+          else return null;
+        }
         return (
           <Link
             key={index}
