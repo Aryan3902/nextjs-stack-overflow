@@ -6,12 +6,14 @@ import { SignedIn, auth } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-import { getUserInfo, getUserById } from "@/lib/actions/user.action";
+import { getUserInfo } from "@/lib/actions/user.action";
 import { timeAgo } from "@/lib/utils";
 
 import type { URLProps } from "@/types";
 import ProfileLink from "@/components/shared/ProfileLink";
 import Stats from "@/components/shared/Stats";
+import QuestionsTab from "@/components/shared/QuestionsTab";
+import AnswersTab from "@/components/shared/AnswersTab";
 // import type { Metadata } from "next";
 
 // export async function generateMetadata({
@@ -112,18 +114,18 @@ const Page = async ({ params, searchParams }: URLProps) => {
             value="top-posts"
             className="mt-5 flex w-full flex-col gap-6"
           >
-            {/* <QuestionsTab
+            <QuestionsTab
               searchParams={searchParams}
               userId={userInfo.user._id}
               clerkId={clerkId}
-            /> */}
+            />
           </TabsContent>
           <TabsContent value="answers" className="flex w-full flex-col gap-6">
-            {/* <AnswersTab
+            <AnswersTab
               searchParams={searchParams}
               userId={userInfo.user._id}
               clerkId={clerkId}
-            /> */}
+            />
           </TabsContent>
         </Tabs>
       </div>

@@ -3,9 +3,12 @@ import React from "react";
 import TopicTag from "../shared/TopicTag";
 import Metric from "../shared/Metric";
 import { formatNumber, timeAgo } from "@/lib/utils";
+import { SignedIn } from "@clerk/nextjs";
+import EditDeleteAction from "../shared/EditDeleteAction";
 
 interface QuestionCardProps {
   id: string;
+  clerkId?: string | null;
   title: string;
   tags: {
     id: string;
@@ -24,6 +27,7 @@ interface QuestionCardProps {
 
 const QuestionCard = ({
   id,
+  clerkId,
   title,
   tags,
   votes,
@@ -32,6 +36,7 @@ const QuestionCard = ({
   author,
   askedAt,
 }: QuestionCardProps) => {
+  const showActionButtons = clerkId && clerkId === author.id;
   return (
     <div className="card-wrapper rounded-[10px] p-9 sm:px-11">
       <div className="flex flex-col-reverse items-start justify-between gap-5 sm:flex-row">
@@ -44,6 +49,7 @@ const QuestionCard = ({
           </h3>
         </Link>
       </div>
+      <SignedIn>{showActionButtons && <EditDeleteAction />}</SignedIn>
       <div className="mt-3.5 flex flex-wrap gap-2">
         {tags.map((tag) => (
           <TopicTag

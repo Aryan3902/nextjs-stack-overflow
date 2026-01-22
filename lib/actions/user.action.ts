@@ -9,6 +9,7 @@ import {
   GetAllUsersParams,
   GetSavedQuestionParams,
   GetUserByIdParams,
+  GetUserStatsParams,
   ToggleSaveQuestionParams,
   UpdateUserParams,
 } from "./shared.types";
@@ -196,6 +197,75 @@ export async function getUserInfo(params: GetUserByIdParams) {
     const totalQuestions = await Question.countDocuments({ author: user._id });
     const totalAnswers = await Answer.countDocuments({ author: user._id });
     return { user, totalQuestions, totalAnswers };
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function getUserQuestions(params: GetUserStatsParams) {
+  try {
+    connectToDatabase();
+
+    const { userId, page = 1, pageSize = 10 } = params;
+
+    const totalQuestions = await Question.countDocuments({ author: userId });
+
+    const userQuestions = await Question.find({
+      author: userId,
+    })
+      .sort({ views: -1, createdAt: -1 })
+      .populate({
+        path: "author",
+        model: User,
+        select: "_id clerkId name picture",
+      })
+      .populate({
+        path: "tags",
+        model: Tag,
+        select: "_id name",
+      })
+      .skip((page - 1) * pageSize)
+      .limit(pageSize);
+
+    return {
+      totalQuestions,
+      userQuestions,
+    };
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function getUserAnswers(params: GetUserStatsParams) {
+  try {
+    connectToDatabase();
+
+    const { userId, page = 1, pageSize = 10 } = params;
+
+    const totalAnswers = await Answer.countDocuments({ author: userId });
+
+    const userAnswers = await Answer.find({
+      author: userId,
+    })
+      .sort({ votes: -1 })
+      .populate({
+        path: "author",
+        model: User,
+        select: "_id clerkId name picture",
+      })
+      .populate({
+        path: "question",
+        select: "_id title",
+      })
+      .skip((page - 1) * pageSize)
+      .limit(pageSize);
+
+    return {
+      totalAnswers,
+      userAnswers,
+    };
   } catch (error) {
     console.error(error);
     throw error;
