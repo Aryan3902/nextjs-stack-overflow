@@ -6,10 +6,12 @@ import { connectToDatabase } from "../mongoose";
 import {
   AnswerVoteParams,
   CreateAnswerParams,
+  DeleteAnswerParams,
   GetAnswersParams,
 } from "./shared.types";
 import Question from "@/database/question.model";
 import { revalidatePath } from "next/cache";
+import Interaction from "@/database/interaction.model";
 
 export async function getAnswers(params: GetAnswersParams) {
   try {
@@ -20,7 +22,7 @@ export async function getAnswers(params: GetAnswersParams) {
     // Get all answers for a question
     const answers = await Answer.find({ question: questionId }).populate(
       "author",
-      "_id name picture clerkId"
+      "_id name picture clerkId",
     );
 
     return { answers };
@@ -52,6 +54,34 @@ export async function createAnswer(data: CreateAnswerParams) {
     revalidatePath(path);
   } catch (error) {
     console.error(error);
+    throw error;
+  }
+}
+
+export async function deleteAnswer(params: DeleteAnswerParams) {
+  try {
+    connectToDatabase();
+
+    const { answerId, path } = params;
+
+    const answer = await Answer.findById(answerId);
+
+    if (!answer) {
+      throw new Error("Answer not found");
+    }
+
+    await Answer.deleteOne({ _id: answerId });
+
+    await Question.updateMany(
+      { question: answerId },
+      { $pull: { answers: answerId } },
+    );
+
+    await Interaction.deleteMany({ answer: answerId });
+
+    revalidatePath(path);
+  } catch (error) {
+    console.log(error);
     throw error;
   }
 }

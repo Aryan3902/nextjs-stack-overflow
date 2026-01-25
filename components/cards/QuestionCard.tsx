@@ -5,28 +5,34 @@ import Metric from "../shared/Metric";
 import { formatNumber, timeAgo } from "@/lib/utils";
 import { SignedIn } from "@clerk/nextjs";
 import EditDeleteAction from "../shared/EditDeleteAction";
+import console from "console";
+
+interface Tag {
+  name: string;
+  _id: string;
+}
+
+interface Author {
+  _id: string;
+  name: string;
+  picture: string;
+  clerkId: string;
+}
 
 interface QuestionCardProps {
-  id: string;
   clerkId?: string | null;
+  _id: string;
   title: string;
-  tags: {
-    id: string;
-    name: string;
-  }[];
+  tags: Tag[];
+  author: Author;
   votes: number;
-  answers: Array<object>;
   views: number;
-  author: {
-    id: string;
-    name: string;
-    picture: string;
-  };
+  answers: Array<object>;
   askedAt: Date;
 }
 
 const QuestionCard = ({
-  id,
+  _id,
   clerkId,
   title,
   tags,
@@ -36,26 +42,31 @@ const QuestionCard = ({
   author,
   askedAt,
 }: QuestionCardProps) => {
-  const showActionButtons = clerkId && clerkId === author.id;
+  const showActionButtons = clerkId && clerkId === author.clerkId;
+  console.log(clerkId, author.clerkId);
   return (
     <div className="card-wrapper rounded-[10px] p-9 sm:px-11">
       <div className="flex flex-col-reverse items-start justify-between gap-5 sm:flex-row">
         <span className="text-dark400_light700 line-clamp-1 flex sm:hidden">
           {timeAgo(askedAt)}
         </span>
-        <Link href={`/question/${id}`}>
+        <Link href={`/question/${_id}`}>
           <h3 className="sm:h3-semibold base-semibold text-dark200_light900 line-clamp-1 flex-1">
             {title}
           </h3>
         </Link>
       </div>
-      <SignedIn>{showActionButtons && <EditDeleteAction />}</SignedIn>
+      <SignedIn>
+        {showActionButtons && (
+          <EditDeleteAction type="question" itemId={JSON.stringify(_id)} />
+        )}
+      </SignedIn>
       <div className="mt-3.5 flex flex-wrap gap-2">
         {tags.map((tag) => (
           <TopicTag
-            key={tag.id}
+            key={tag._id}
             name={tag.name}
-            _id={tag.id}
+            _id={tag._id}
             showCount={false}
           />
         ))}
@@ -66,7 +77,7 @@ const QuestionCard = ({
           alt="User"
           value={author.name}
           title={` - asked ${timeAgo(askedAt)}`}
-          href={`/user/${author.id}`}
+          href={`/user/${author._id}`}
           isAuthor
           textStyles="body-medium text-dark400_light700"
         />

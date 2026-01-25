@@ -108,6 +108,10 @@ export interface CreateQuestionParams extends Path, Description {
   author: Schema.Types.ObjectId | IUser;
 }
 
+export interface EditQuestionParams extends QuestionId, Path, Description {
+  title: string;
+}
+
 export interface GetQuestionByIdParams extends QuestionId {}
 
 export interface QuestionVoteParams extends QuestionId, UserId, Path, Voting {}
@@ -120,6 +124,12 @@ export interface EditQuestionParams extends QuestionId, Path, Description {
   title: string;
   tags?: string[];
 }
+
+export interface RecommendedParams
+  extends UserId,
+    OptionalPage,
+    OptionalPageSize,
+    OptionalSearch {}
 
 /**
  * Interfaces for answer actions
