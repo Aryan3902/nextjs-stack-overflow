@@ -1,5 +1,3 @@
-import { auth } from "@clerk/nextjs";
-
 import QuestionCard from "@/components/cards/QuestionCard";
 import NoResult from "@/components/shared/NoResult";
 
@@ -8,8 +6,6 @@ import { getQuestionsByTagId } from "@/lib/actions/tag.actions";
 import type { URLProps } from "@/types";
 
 const Page = async ({ params, searchParams }: URLProps) => {
-  const { userId: clerkId } = auth();
-
   const result = await getQuestionsByTagId({
     tagId: params.id,
     searchQuery: searchParams.q,
@@ -25,7 +21,7 @@ const Page = async ({ params, searchParams }: URLProps) => {
           result.questions.map((question: any) => (
             <QuestionCard
               key={question._id}
-              id={question._id}
+              _id={question._id}
               title={question.title}
               tags={question.tags}
               author={question.author}

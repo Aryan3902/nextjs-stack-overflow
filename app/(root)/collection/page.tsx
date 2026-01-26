@@ -1,11 +1,10 @@
 import { auth } from "@clerk/nextjs";
-import { redirect } from "next/navigation";
 
 import Filters from "@/components/shared/Filters";
 import NoResult from "@/components/shared/NoResult";
 import QuestionCard from "@/components/cards/QuestionCard";
 
-import { getSavedQuestions, getUserById } from "@/lib/actions/user.action";
+import { getSavedQuestions } from "@/lib/actions/user.action";
 
 import { QuestionFilters } from "@/constants/filters";
 
@@ -43,7 +42,7 @@ export default async function Collection({ searchParams }: SearchParamsProps) {
           questions.map((question: any) => (
             <QuestionCard
               key={question._id}
-              id={question._id}
+              _id={question._id}
               //   clerkId={clerkId}
               title={question.title}
               tags={question.tags}

@@ -1,8 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
 
-import { SignedIn } from "@clerk/nextjs";
-
 import ParseHTML from "@/components/shared/ParseHTML";
 
 import { getAnswers } from "@/lib/actions/answer.action";
@@ -42,9 +40,6 @@ const AllAnswers = async ({
       </div>
       <div>
         {result.answers.map((answer: any) => {
-          const showActionButtons =
-            JSON.stringify(userId) === JSON.stringify(answer.author._id);
-
           return (
             <article key={answer._id} className="light-border border-b py-10">
               <div className="mb-8 flex flex-col-reverse justify-between gap-5 sm:flex-row sm:items-center sm:gap-2">
